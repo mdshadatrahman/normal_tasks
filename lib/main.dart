@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:normal_tasks/pages/home_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 void main() async {
   await Hive.initFlutter('hive_boxes');
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         primaryColor: Colors.teal,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

@@ -3,36 +3,32 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:normal_tasks/models/task.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
-  late double height, width;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _taskContentController = TextEditingController();
   String? _newTaskContent;
   Box? _box;
 
   @override
   dispose() {
     super.dispose();
-    _taskContentController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.height = MediaQuery.of(context).size.height;
-    widget.width = MediaQuery.of(context).size.width;
-    print("Input Val: $_newTaskContent");
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Tasks'),
+        title: const Text('Tasks'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: tasksView(width: widget.width, height: widget.height),
+        child: tasksView(width: width, height: height),
       ),
       floatingActionButton: fab(),
     );
@@ -41,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   FloatingActionButton fab() {
     return FloatingActionButton(
       onPressed: addTask,
-      child: Icon(
+      child: const Icon(
         Icons.add,
       ),
     );
@@ -58,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           return Center(
             child: Padding(
               padding: EdgeInsets.only(top: height * 0.1),
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             ),
           );
         }
@@ -67,15 +63,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _tasksList({required double height, required double width}) {
-    // Task _newTask = Task(
-    //   content: 'Go to gym',
-    //   done: false,
-    //   timestamp: DateTime.now().toString(),
-    // );
-    // _box?.add(_newTask.toMap());
     List tasks = _box!.values.toList();
 
-    return Container(
+    return SizedBox(
       height: height * 0.9,
       child: ListView.builder(
         itemCount: tasks.length,
@@ -111,15 +101,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   showAlertDialog(BuildContext context, Task task, int index) {
-
     Widget noButton = TextButton(
-      child: Text("No"),
+      child: const Text("No"),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget yesButton = TextButton(
-      child: Text(
+      child: const Text(
         "Yes",
         style: TextStyle(color: Colors.red),
       ),
@@ -131,7 +120,7 @@ class _HomePageState extends State<HomePage> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text(
+      title: const Text(
         "Do you really want to delete?",
         style: TextStyle(
           color: Colors.black,
@@ -140,7 +129,7 @@ class _HomePageState extends State<HomePage> {
       ),
       content: Text(
         task.content,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 24,
         ),
@@ -161,18 +150,18 @@ class _HomePageState extends State<HomePage> {
   void addTask() {
     showDialog(
       context: context,
-      builder: (BuildContext _context) {
+      builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add new task'),
           content: TextField(
             onSubmitted: (val) {
               if (_newTaskContent != null) {
-                Task _newTask = Task(
+                Task newTask = Task(
                   content: _newTaskContent!,
                   done: false,
                   timestamp: DateTime.now().toString(),
                 );
-                _box?.add(_newTask.toMap());
+                _box?.add(newTask.toMap());
                 setState(() {
                   _newTaskContent = null;
                   Navigator.pop(context);
