@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:normal_tasks/models/task.dart';
 
 class HomePage extends StatefulWidget {
@@ -149,30 +150,75 @@ class _HomePageState extends State<HomePage> {
 
   void addTask() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add new task'),
-          content: TextField(
-            onSubmitted: (val) {
-              if (_newTaskContent != null) {
-                Task newTask = Task(
-                  content: _newTaskContent!,
-                  done: false,
-                  timestamp: DateTime.now().toString(),
-                );
-                _box?.add(newTask.toMap());
-                setState(() {
-                  _newTaskContent = null;
-                  Navigator.pop(context);
-                });
-              }
-            },
-            onChanged: (val) {
-              setState(() {
-                _newTaskContent = val;
-              });
-            },
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                onSubmitted: (val) {
+                  // if (_newTaskContent != null) {
+                  //   Task newTask = Task(
+                  //     content: _newTaskContent!,
+                  //     done: false,
+                  //     timestamp: DateFormat.yMMMMEEEEd()
+                  //         .format(DateTime.now())
+                  //         .toString(),
+                  //   );
+                  //   _box?.add(newTask.toMap());
+                  //   setState(() {
+                  //     _newTaskContent = null;
+                  //     Navigator.pop(context);
+                  //   });
+                  // }
+                },
+                onChanged: (val) {
+                  setState(() {
+                    _newTaskContent = val;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _newTaskContent = null;
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (_newTaskContent != null) {
+                        Task newTask = Task(
+                          content: _newTaskContent!,
+                          done: false,
+                          timestamp: DateFormat.yMMMMEEEEd()
+                              .format(DateTime.now())
+                              .toString(),
+                        );
+                        _box?.add(newTask.toMap());
+                        setState(() {
+                          _newTaskContent = null;
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    child: const Text('Add'),
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },
