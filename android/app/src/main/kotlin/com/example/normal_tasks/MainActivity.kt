@@ -1,4 +1,4 @@
-package com.example.normal_tasks
+package com.shadat.normal_tasks
 
 import io.flutter.embedding.android.FlutterActivity
 
